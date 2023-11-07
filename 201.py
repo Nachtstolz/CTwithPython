@@ -1,4 +1,4 @@
-# P.201
+# P.201 # 성공
 # 3. 떡볶이 떡 만들기
 
 # 동빈이는 여행 가신 부모님을 대신해 떡집 일을 하기로 했다. 떡볶이 떡을 만들기로 했는데,
@@ -19,26 +19,63 @@ li = list(map(int, input().split(' ')))
 li.sort()
 # print(li)
 res = 0
+
+# 재귀 풀이 - 직접
 def binary_search(list, res, start, end) :
     if end < start :
-        return 0
+        return res
     
     mid = (start+end) // 2
     total = 0
 
     for i in list :
-        if i - list[mid] > 0 :
-            total += (i-list[mid])
+        if i - mid > 0 :
+            total += (i-mid)
     
-    print(total, res)
-    if total >= m and list[mid] > res :
-        res = list[mid]
-    elif list[mid] > res : # 19 vs 15
-        return binary_search(list, res, start, mid-1)
-    else : # total > m에만 해당 # 10 vs 15
+    if total >= m and mid > res :
+        res = mid
         return binary_search(list, res, mid+1, end)
-    
-binary_search(li, res, 0, n-1)
-print(res)
+    elif total < m : # 19 vs 15
+        return binary_search(list, res, start, mid-1)
+    #else : # total > m에만 해당 # 10 vs 15
         
     
+res = binary_search(li, res, 0, li[n-1])
+print(res)
+        
+
+# 반복문 풀이 - 교재 참고
+# 현재 얻을 수 있는 떡볶이 양에 따라 자를 위치를 정해야 하기에,
+# 재귀로 구현하는 것이 귀찮은 작업이 될 수도 있음.
+# 때문에 일반적으로 파라메트릭 서치 문제 유형은 이진 탐색을 반복문을 이용해 구현하는 편.
+
+'''
+# 떡의 개수(N)와 요청한 떡의 길이(M)을 입력받기
+n, m = list(map(int, input().split(' ')))
+# 각 떡의 개별 높이 정보를 입력받기
+array = list(map(int, input().split()))
+
+# 이진 탐색을 위한 시작점과 끝점 설정
+start = 0
+end = max(array)
+
+# 이진 탐색 수행(반복적)
+result = 0
+while(start <= end) :
+    total = 0
+    mid = (start + end) // 2
+    for x in array :
+        # 잘랐을 때의 떡 양 개산
+        if x > mid :
+            total += x - mid   
+    # 떡의 양이 부족한 경우 더 많이 자르기 (왼쪽 부분 탐색)
+    if total < m :
+        end = mid - 1
+    # 떡의 양이 충분한 경우 덜 자르기 (오른쪽 부분 탐색)
+    else :
+        result = mid # 최대한 덜 잘랐을 때가 정답이므로 여기에서 result에 기록
+        start = mid+1
+
+# 정답 출력
+print(result)
+'''
