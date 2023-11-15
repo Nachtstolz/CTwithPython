@@ -32,7 +32,7 @@ for i in range(n) :
 # 한 번 계산된 결과를 저장하기 위한 DP 테이블 초기화
 dp = [10001] * (m+1)
 
-# DP 진행 (보텀업)s
+# DP 진행 (보텀업)
 dp[0] = 0
 for i in range(n) :
     for j in range(li[i], m+1) :
