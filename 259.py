@@ -1,4 +1,4 @@
-# P.259 # 최단 거리
+# P.259 # 최단 거리 # 교재 참고 -> 교재 사용 방식 : 플로이드 워셜 
 # 2. 미래 도시
 # 방문 판매원 A는 많은 회사가 모여 있는 공중 미래 도시에 있다.
 # 공중 미래 도시에는 1~N번까지의 회사가 있는데, 특정 회사끼리는 도로로 연결되어 있다.
@@ -18,12 +18,32 @@
 ''' 리스트 사용해서 풀이하기 '''
 n, m = map(int, input().split())
 arr = []
-for i in range(m) : 
-    arr.append(tuple(map(int, input().split())))
-#print(arr)
+# ⭐️ 배열 생성법 유의 또 유의! 
+res = [[9999] * (n+1) for _ in range(n+1)]
+
+for _ in range(m) : 
+    tmp = tuple(map(int, input().split()))
+    arr.append(tmp)
+    res[tmp[0]][tmp[1]] = 1
+    res[tmp[1]][tmp[0]] = 1
+
 arr.sort() #key = lambda item : item[0]
 x, k = map(int, input().split())
 
-res = [9999 * n]
-# for item in arr :
+# 전체 비용 산정
+for a in range(1, n+1) :
+    for b in range(1, n+1) :
+        for r in range(1, n+1) :
+            res[a][b] = min(res[a][b], res[a][r]+res[r][b])
+
+out = res[1][k] + res[k][x]
+if out > 9999 :
+    print(-1)
+else :
+    print(out)
     
+''' 만약 다익스트라 알고리즘으로 구현한다면 ? '''
+# visited 배열을 통해 방문 여부 체크하고
+# 방문하지 않은 노드 + 가장 짧은 거리에 있는 노드 선택
+# 거리는 정해져있지 않기 때문에 for 문을 사용해 1씩 증가한 시간 저장.
+# 1 -> k, k -> x 의 경우를 따로 진행하기.
