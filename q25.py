@@ -1,4 +1,4 @@
-# P.361 # 정렬 # 성공
+# P.361 # 정렬 # 성공 # 교재 버전 확인해야
 # Q25. 실패율
 
 # 오렐리가 만든 프렌즈 오천성이 대성공을 거뒀지만, 요즘 신규 사용자 수가 급감했다.
@@ -45,3 +45,40 @@ def solution(N, stages) :
 # N = int(input())
 # stages = list(map(int, input().split()))
 # solution(N, stages)
+
+''' 교재 solution '''
+# 구현 문제로 분류할 수 있으나 문제 해결 과정에서 정렬 라이브러리가 효과적으로 사용될 수 있어
+# 정렬 유형의 문제로 분류.
+# 전체 스테이지 개수는 200,000 이하이기 때문에 기본 정렬 라이브러리로 O(NlogN) 시간으로
+# 내림차순 정렬을 수행하면 충분함.
+
+# 이 코드는 다음 프로그래머스 사이트에서 테스트해야 정상 동작한다.
+# https://programmers.co.kr/learn/courses/30/lessons/42889
+
+'''
+def solution(N, stages) :
+    answer = []
+    length = len(stages)
+
+    # 스테이지 번호를 1부터 N까지 증가시키며
+    for i in range(1, N+1) :
+        # 해당 스테이지에 머물러 있는 사람의 수 계산
+        count = stages.count(i) # ⭐️ count 함수로 개수 체크 가능
+
+        # 실패율 계산
+        if length == 0 :
+            fail = 0
+        else : 
+            fail = count/length
+
+        # 리스트에 (스테이지 번호, 실패율) 원소 삽입
+        answer.append((i, fail))
+        length -= count
+
+    # 실패율을 기준으로 각 스테이지를 내림차순 정렬
+    answer = sorted(answer, key=lambda t:t[1], reverse=True)
+
+    # 정렬된 스테이지 번호 출력
+    answer = [[i[0] for i in answer]]
+    return answer
+'''
