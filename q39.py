@@ -1,4 +1,4 @@
-# P.388 # 최단 경로
+# P.388 # 최단 경로 # 성공 # 교재 참고
 # Q39. 화성 탐사
 
 # 당신은 화성 탐사 기계를 개발하는 프로그래머이다. 화성은 에너지 공급원을 찾기가 힘들다.
@@ -55,3 +55,56 @@ while t > 0 :
     # print(dist) # 디버깅
     print(dist[n-1][n-1])
 
+''' 교재 풀이 방법 '''
+# NxN 크기의 맵이 주어졌을 때, 맵의 각 위치(칸)를 노드로 보고 상하좌우로 모든 노드가 연결되어 있다고 보면 된다.
+# 예를 들어, 위치 A, B가 서로 인접해있다고 할 때, A->B 비용은 B위치의 탐사 비용, B->A 비용은 A위치의 탐사 비용이 된다.
+# N의 범위 크기가 최대 125로 작게 느껴질 수도 있지만 2차원 공간이기에 전체 노드의 개수는 N제곱으로 10,000을 넘을 수 있다.
+# 따라서 플로이드 워셜 알고리즘으로는 이 문제를 해결하기에 적합하지 않으므로 다익스트라 최단 경로 알고리즘으로
+# 답을 도출할 수 있다.
+
+import heapq
+import sys
+input = sys.stdin.readline
+INF = int(1e9) # 무한을 의미하는 값으로 10억 설정
+
+dx = [-1, 0, 1, 0]
+dy = [0, 1, 0, -1]
+
+# 전체 테스트 케이스만큼 반복
+for tc in range(int(input())) :
+    # 노드의 개수 입력받기
+    n = int(input())
+    # 전체 맵 정보 입력받기
+    graph = []
+    for i in range(n) :
+        graph.append(list(map(int, input().split())))
+
+    # 최단 거리 테이블을 모두 무한으로 초기화
+    distance = [[INF] * n for _ in range(n)]
+
+    x, y = 0, 0 # 시작 위치는 (0,0)
+    # 시작 노드로 가기 위한 비용은 (0,0) 위치의 값으로 설정하여, 큐에 삽입
+    q = [(graph[x][y], x, y)]
+    distance[x][y] = graph[x][y]
+
+    # 다익스트라 알고리즘 수행
+    while q :
+        # 가장 최단 거리가 짧은 노드에 대한 정보 꺼내기
+        dist, x, y = heapq.heappop(q)
+        # 현재 노드가 이미 처리된 적이 있는 노드라면 무시
+        # 처리된 적이 없다면 distance[x][y] = INF 이기 때문에 항상 큼
+        if distance[x][y] < dist :
+            continue
+        # 현재 노드와 연결된 다른 인접한 노드들을 확인
+        for i in range(4) :
+            nx = x + dx[i]
+            ny = y + dy[i]
+            # 맵의 범위를 벗어나는 경우 무시
+            if nx < 0 or nx >= n or ny < 0 or ny >= n :
+                continue
+            cost = dist + graph[nx][ny]
+            # 현재 노드를 거쳐서, 다른 노드로 이동하는 거리가 더 짧은 경우
+            if cost < distance[nx][ny] :
+                distance[nx][ny] = cost
+                heapq.heappush(q, (cost, nx, ny))
+    print(distance[n-1][n-1])
