@@ -14,11 +14,14 @@
 
 # 크루스칼 알고리즘 활용
 
+# 특정 원소가 속한 집합 찾기
 def find_parent(parent, x) :
+    # 루트 노드가 아니라면, 루트 노드를 찾을 때까지 재귀 호출
     if parent[x] != x :
         parent[x] = find_parent(parent, parent[x])
     return parent[x]
 
+# 두 원소가 속한 집합 합치기
 def union_parent(parent, a, b) :
     a = find_parent(parent, a)
     b = find_parent(parent, b)
@@ -39,11 +42,12 @@ for i in range(n) :
 for _ in range(m) :
     x, y, z = map(int, input().split())
     all_values += z
-    values.append((z, x, y))
+    values.append((z, x, y)) # 정렬하기 위해 비용을 맨 앞으로
 
-values.sort()
+values.sort() # 비용 순서로 정렬
 
 for value in values :
+    # 사이클이 생성하지 않는 경우 집합에 포함
     if find_parent(parent, value[1]) != find_parent(parent, value[2]) :
         union_parent(parent, value[1], value[2])
         res += value[0]
