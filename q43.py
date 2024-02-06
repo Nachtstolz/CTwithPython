@@ -1,4 +1,4 @@
-# P.397 # 그래프 이론 # 오류 수정 필요 # 크루스칼 알고리즘 기본 코드 참고
+# P.397 # 그래프 이론 # 성공 # 크루스칼 알고리즘 기본 코드 참고
 # Q43. 어두운 길
 
 # 한 마을에 N개의 집과 M개의 도로가 구성되어 있다. 집은 0번부터 N-1번까지 번호로 구분된다.
@@ -31,19 +31,21 @@ n, m = map(int, input().split())
 parent = [0] * n # 부모 노드 저장할 배열 -> 부모 노드가 하나로 통일되면 종료
 values = [] # 거리 값 저장할 배열
 res = 0 # 최종 비용 저장할 변수
+all_values = 0 # 모든 가로등을 설치했을 때 금액
 
 for i in range(n) :
     parent[i] = i # 부모 노드 자기 자신으로 초기화 
 
 for _ in range(m) :
     x, y, z = map(int, input().split())
+    all_values += z
     values.append((z, x, y))
 
 values.sort()
 
 for value in values :
-    if parent[value[1]] != parent[value[2]] :
+    if find_parent(parent, value[1]) != find_parent(parent, value[2]) :
         union_parent(parent, value[1], value[2])
         res += value[0]
 
-print(res)
+print(all_values - res)
