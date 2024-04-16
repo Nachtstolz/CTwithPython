@@ -54,6 +54,8 @@ hide_cnt = dist.count(max(dist[1:]))
 print(hide_num, max_dist, hide_cnt)
 
 ''' 교재 출력 부분 구현 '''
+
+'''
 # 최단 거리가 가장 먼 노드 번호 (동빈이가 숨을 헛간의 번호)
 max_node = 0
 # 도달할 수 있는 노드 중, 최단 거리가 가장 먼 노드와의 최단 거리
@@ -70,3 +72,4 @@ for i in range(1, n+1) :
         result.append(i)
 
 print(max_node, max_distance, len(result))
+'''
