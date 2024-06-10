@@ -1,4 +1,4 @@
-# P.329 # 구현 
+# P.329 # 구현 # 교재 참고
 # Q12. 기둥과 보 설치
 
 # https://programmers.co.kr/learn/courses/30/lessons/60061
